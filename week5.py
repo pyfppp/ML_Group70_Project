@@ -1,12 +1,11 @@
-import pandas
-from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.model_selection import KFold
-from sklearn.metrics import mean_squared_error
 import numpy as np
+import pandas
 from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.decomposition import PCA
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import PolynomialFeatures
 
 
 # get details of food in different files and make prediction about the probability of obesity
@@ -22,8 +21,8 @@ def get_features(file):
 
 
 def get_training_data():
-    file_fat_kal = pandas.read_csv("Food_Supply_kcal_Data.csv")
-    file_protein_supply = pandas.read_csv("Protein_Supply_Quantity_Data.csv")
+    file_fat_kal = pandas.read_csv("foot_supply_kcal_data/Food_Supply_kcal_Data.csv")
+    file_protein_supply = pandas.read_csv("protein_supply_quantity_data/Protein_Supply_Quantity_Data.csv")
     file_fat_quantity = pandas.read_csv("Fat_Supply_Quantity_Data.csv")
     x, y = get_features(file_fat_kal)
     return x, y
@@ -127,8 +126,8 @@ if __name__ == '__main__':
                             "random_forrest": ['number of trees', 'criterion', 'polynomial features\' degree',
                                                'Number of KFold']}
     print('This is the Group70 week5 assignment')
-    file_fat_kal = pandas.read_csv("Food_Supply_kcal_Data.csv")
-    file_protein_supply = pandas.read_csv("Protein_Supply_Quantity_Data.csv")
+    file_fat_kal = pandas.read_csv("foot_supply_kcal_data/Food_Supply_kcal_Data.csv")
+    file_protein_supply = pandas.read_csv("protein_supply_quantity_data/Protein_Supply_Quantity_Data.csv")
     file_fat_quantity = pandas.read_csv("Fat_Supply_Quantity_Data.csv")
     x, y = get_features(file_fat_kal)
     # print('searching ' + list(model_and_parameters.keys())[0] + ' polynomial features degree ...')
