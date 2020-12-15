@@ -1,4 +1,3 @@
-#ML_Group70_Project
 ## 1. All the hyper parameters which need be selected manually in each model
 - Linear Regression Model
 1. Degree of Polynomial features
