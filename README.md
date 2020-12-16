@@ -24,3 +24,8 @@ def get_features(file):
     obesity.fillna(obesity.mean(), inplace=True)
     return features, obesity
 ```
+## 3. Project Target
+We collected three data sets, which represented three different dimensions to describe multiple countries' people's   
+daily food(fat proportion, food kcal proportion and protein proportion), we wanted to find a relatively general pattern,  
+which could show which dimension will contribute the most to people's obesity, so that we can create a reference when  
+we try to keep our own health.
