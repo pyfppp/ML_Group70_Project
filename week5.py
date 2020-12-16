@@ -2,10 +2,11 @@ import numpy as np
 import pandas
 from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.decomposition import PCA
 
 
 # get details of food in different files and make prediction about the probability of obesity
@@ -93,6 +94,8 @@ def get_poly(x, y, model_type: str):
 
 def plot_mse_and_score(score_list, train_error_std, test_error_std, train_error_mean, test_error_mean, x_list,
                        model_type, x_list_name):
+    if model_type == 'random_forrest' and x_list_name == 'criterion':
+        plt.xticks([0, 1], x_list)
     axs1 = plt.subplot(211)
     plt.errorbar(x_list, train_error_mean, yerr=train_error_std, label='train_mse')
     plt.errorbar(x_list, test_error_mean, yerr=test_error_std, label='test_mse')
@@ -117,24 +120,120 @@ def get_lr_prediction(x, y):
 
 # best k=8, best poly=4
 def get_ridge_C(x, y):
-    pass
+    kf = KFold(n_splits=8)
+    poly = PolynomialFeatures(degree=4)
+    x_ = poly.fit_transform(x)
+    C_list = [1e-4, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4]
+    score_list = []
+    train_error_mse = []
+    test_error_mse = []
+    train_error_std = []
+    test_error_std = []
+    for c in C_list:
+        temp_train = []
+        temp_test = []
+        model = Ridge(alpha=1 / (2 * c))
+        for train, test in kf.split(x_):
+            model.fit(x_[train], y[train])
+            temp_train.append(mean_squared_error(y[train], model.predict(x_[train])))
+            temp_test.append(mean_squared_error(y[test], model.predict(x_[test])))
+        score_list.append(model.score(x_, y))
+        train_error_mse.append(np.array(temp_train).mean())
+        test_error_mse.append(np.array(temp_test).mean())
+        train_error_std.append(np.array(temp_train).std())
+        test_error_std.append(np.array(temp_test).std())
+    plot_mse_and_score(score_list, train_error_std, test_error_std, train_error_mse, test_error_mse, C_list,
+                       "ridge", 'C')
 
 
 # best k=8, best poly=4
 def get_ridge_max_iteration(x, y):
-    pass
+    kf = KFold(n_splits=8)
+    poly = PolynomialFeatures(degree=4)
+    kf = KFold(n_splits=8)
+    poly = PolynomialFeatures(degree=4)
+    x_ = poly.fit_transform(x)
+    max_iteration_list = [1e3, 1e4, 1e5, 1e6]
+    score_list = []
+    train_error_mse = []
+    test_error_mse = []
+    train_error_std = []
+    test_error_std = []
+    for iteration in max_iteration_list:
+        temp_train = []
+        temp_test = []
+        model = Ridge(max_iter=iteration)
+        for train, test in kf.split(x_):
+            model.fit(x_[train], y[train])
+            temp_train.append(mean_squared_error(y[train], model.predict(x_[train])))
+            temp_test.append(mean_squared_error(y[test], model.predict(x_[test])))
+        score_list.append(model.score(x_, y))
+        train_error_mse.append(np.array(temp_train).mean())
+        test_error_mse.append(np.array(temp_test).mean())
+        train_error_std.append(np.array(temp_train).std())
+        test_error_std.append(np.array(temp_test).std())
+    plot_mse_and_score(score_list, train_error_std, test_error_std, train_error_mse, test_error_mse, max_iteration_list,
+                       "ridge", 'iteration')
 
 
 def get_ridge_prediction(x, y):
     pass
 
 
+# best k=8,poly=2
 def get_number_of_trees(x, y):
-    pass
+    kf = KFold(n_splits=8)
+    poly = PolynomialFeatures(degree=2)
+    x_ = poly.fit_transform(x)
+    trees_list = [2, 4, 6, 8, 10, 20, 40, 60, 100]
+    score_list = []
+    train_error_mse = []
+    test_error_mse = []
+    train_error_std = []
+    test_error_std = []
+    for tree in trees_list:
+        temp_train = []
+        temp_test = []
+        model = RandomForestRegressor(n_estimators=tree)
+        for train, test in kf.split(x_):
+            model.fit(x_[train], y[train])
+            temp_train.append(mean_squared_error(y[train], model.predict(x_[train])))
+            temp_test.append(mean_squared_error(y[test], model.predict(x_[test])))
+        score_list.append(model.score(x_, y))
+        train_error_mse.append(np.array(temp_train).mean())
+        test_error_mse.append(np.array(temp_test).mean())
+        train_error_std.append(np.array(temp_train).std())
+        test_error_std.append(np.array(temp_test).std())
+    plot_mse_and_score(score_list, train_error_std, test_error_std, train_error_mse, test_error_mse, trees_list,
+                       "random_forrest", 'trees')
 
 
+# best k=8,poly=2
 def get_criterion(x, y):
-    pass
+    kf = KFold(n_splits=8)
+    poly = PolynomialFeatures(degree=2)
+    x_ = poly.fit_transform(x)
+    criterion_list = ['mae', 'mse']
+    score_list = []
+    train_error_mse = []
+    test_error_mse = []
+    train_error_std = []
+    test_error_std = []
+    for critic in criterion_list:
+        temp_train = []
+        temp_test = []
+        model = RandomForestRegressor(criterion=critic)
+        for train, test in kf.split(x_):
+            model.fit(x_[train], y[train])
+            temp_train.append(mean_squared_error(y[train], model.predict(x_[train])))
+            temp_test.append(mean_squared_error(y[test], model.predict(x_[test])))
+        score_list.append(model.score(x_, y))
+        train_error_mse.append(np.array(temp_train).mean())
+        test_error_mse.append(np.array(temp_test).mean())
+        train_error_std.append(np.array(temp_train).std())
+        test_error_std.append(np.array(temp_test).std())
+    plot_mse_and_score(score_list, train_error_std, test_error_std, train_error_mse, test_error_mse, criterion_list,
+                       "random_forrest", 'criterion')
 
 
 if __name__ == '__main__':
@@ -147,3 +246,4 @@ if __name__ == '__main__':
     # get_poly(x, y, list(model_and_parameters.keys())[1])
     # get_KFold(x, y, list(model_and_parameters.keys())[1])
     # get_lr_prediction(x, y)
+    get_criterion(x, y)
