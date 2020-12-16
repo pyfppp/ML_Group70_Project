@@ -115,6 +115,28 @@ def get_lr_prediction(x, y):
     lr.fit(poly.fit_transform(x), y)
 
 
+# best k=8, best poly=4
+def get_ridge_C(x, y):
+    pass
+
+
+# best k=8, best poly=4
+def get_ridge_max_iteration(x, y):
+    pass
+
+
+def get_ridge_prediction(x, y):
+    pass
+
+
+def get_number_of_trees(x, y):
+    pass
+
+
+def get_criterion(x, y):
+    pass
+
+
 if __name__ == '__main__':
     model_and_parameters = {"linear_regression": ['polynomial features\' degree', 'Number of KFold'],
                             "ridge": ['max iteration', 'C', 'polynomial features\' degree', 'Number of KFold'],
@@ -122,5 +144,6 @@ if __name__ == '__main__':
                                                'Number of KFold']}
     print('This is the Group70 week5 assignment')
     x, y = get_training_data()
-    get_KFold(x, y, list(model_and_parameters.keys())[0])
-    get_lr_prediction(x, y)
+    get_poly(x, y, list(model_and_parameters.keys())[2])
+    get_KFold(x, y, list(model_and_parameters.keys())[2])
+    # get_lr_prediction(x, y)
