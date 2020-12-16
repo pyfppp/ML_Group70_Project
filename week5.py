@@ -144,6 +144,6 @@ if __name__ == '__main__':
                                                'Number of KFold']}
     print('This is the Group70 week5 assignment')
     x, y = get_training_data()
-    get_poly(x, y, list(model_and_parameters.keys())[2])
-    get_KFold(x, y, list(model_and_parameters.keys())[2])
+    # get_poly(x, y, list(model_and_parameters.keys())[1])
+    # get_KFold(x, y, list(model_and_parameters.keys())[1])
     # get_lr_prediction(x, y)

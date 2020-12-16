@@ -1,4 +1,4 @@
-# All the pictures' meanings
+# pictures' meanings
 1. ridge_poly.png  
 Assume K=10 in KFold, search the best polynomial features' degree in linear regression model  
 conclusion: choosing degree=4  

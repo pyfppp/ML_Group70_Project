@@ -1,2 +1,2 @@
-# All the pictures' meanings
+# pictures' meanings
 
