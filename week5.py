@@ -24,7 +24,7 @@ def get_training_data():
     file_fat_kal = pandas.read_csv("food_supply_kcal_data/Food_Supply_kcal_Data.csv")
     file_protein_supply = pandas.read_csv("protein_supply_quantity_data/Protein_Supply_Quantity_Data.csv")
     file_fat_quantity = pandas.read_csv("fat_supply_quantity_data/Fat_Supply_Quantity_Data.csv")
-    x, y = get_features(file_fat_kal)
+    x, y = get_features(file_fat_quantity)
     return np.array(x), np.array(y).reshape(-1, 1)
 
 
@@ -243,7 +243,13 @@ if __name__ == '__main__':
                                                'Number of KFold']}
     print('This is the Group70 week5 assignment')
     x, y = get_training_data()
-    # get_poly(x, y, list(model_and_parameters.keys())[1])
-    # get_KFold(x, y, list(model_and_parameters.keys())[1])
-    # get_lr_prediction(x, y)
-    get_criterion(x, y)
+    get_poly(x, y, list(model_and_parameters.keys())[0])
+    get_KFold(x, y, list(model_and_parameters.keys())[0])
+    get_poly(x, y, list(model_and_parameters.keys())[1])
+    get_KFold(x, y, list(model_and_parameters.keys())[1])
+    get_poly(x, y, list(model_and_parameters.keys())[2])
+    get_KFold(x, y, list(model_and_parameters.keys())[2])
+    get_ridge_C(x, y)
+    get_ridge_max_iteration(x,y)
+    get_criterion(x,y)
+    get_number_of_trees(x, y)
