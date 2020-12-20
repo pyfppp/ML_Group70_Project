@@ -7,6 +7,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.decomposition import PCA
+from sklearn.dummy import DummyRegressor
 
 
 # get details of food in different files and make prediction about the probability of obesity
@@ -24,7 +25,7 @@ def get_training_data():
     file_fat_kal = pandas.read_csv("food_supply_kcal_data/Food_Supply_kcal_Data.csv")
     file_protein_supply = pandas.read_csv("protein_supply_quantity_data/Protein_Supply_Quantity_Data.csv")
     file_fat_quantity = pandas.read_csv("fat_supply_quantity_data/Fat_Supply_Quantity_Data.csv")
-    x, y = get_features(file_fat_quantity)
+    x, y = get_features(file_protein_supply)
     return np.array(x), np.array(y).reshape(-1, 1)
 
 
@@ -243,13 +244,26 @@ if __name__ == '__main__':
                                                'Number of KFold']}
     print('This is the Group70 week5 assignment')
     x, y = get_training_data()
-    get_poly(x, y, list(model_and_parameters.keys())[0])
-    get_KFold(x, y, list(model_and_parameters.keys())[0])
-    get_poly(x, y, list(model_and_parameters.keys())[1])
-    get_KFold(x, y, list(model_and_parameters.keys())[1])
-    get_poly(x, y, list(model_and_parameters.keys())[2])
-    get_KFold(x, y, list(model_and_parameters.keys())[2])
-    get_ridge_C(x, y)
-    get_ridge_max_iteration(x,y)
-    get_criterion(x,y)
-    get_number_of_trees(x, y)
+    # get_poly(x, y, list(model_and_parameters.keys())[0])
+    # get_KFold(x, y, list(model_and_parameters.keys())[0])
+    # get_poly(x, y, list(model_and_parameters.keys())[1])
+    # get_KFold(x, y, list(model_and_parameters.keys())[1])
+    # get_poly(x, y, list(model_and_parameters.keys())[2])
+    # get_KFold(x, y, list(model_and_parameters.keys())[2])
+    # get_ridge_C(x, y)
+    # get_ridge_max_iteration(x,y)
+    # get_criterion(x,y)
+    # get_number_of_trees(x, y)
+    dummy = DummyRegressor()
+    poly = PolynomialFeatures(degree=3)
+
+    random_food_supply = RandomForestRegressor(criterion='mse', n_estimators=8)
+    from sklearn.model_selection import cross_val_score
+
+    # x = poly.fit_transform(x)
+    # random_food_supply.fit(x, y)
+    # dummy_score = cross_val_score(dummy, x, y, cv=10)
+    # fat_quantity_score = cross_val_score(random_food_supply, x, y, cv=20)
+    # food_supply_score = cross_val_score(random_food_supply, x, y)
+    dummy_score = cross_val_score(dummy,x,y,cv=10)
+    print(np.array(dummy_score).mean())
